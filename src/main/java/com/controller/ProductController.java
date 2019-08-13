@@ -27,7 +27,7 @@ public class ProductController {
         this.cartService = cartService;
     }
 
-    @GetMapping(value = "/admin/products")
+    @GetMapping(value = "/admin/product/edit")
     public String getEditProductsPage(Model model) {
         model.addAttribute("products", productService.getAll());
         return "products";
