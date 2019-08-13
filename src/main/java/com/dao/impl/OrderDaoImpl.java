@@ -42,7 +42,6 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public Optional<Order> getLastOrderForUser(User user) {
         try (Session session = getSessionFactory.openSession()) {
-
             Query query = session.createQuery("from Order where Order.id = :user order by id desc");
             query.setParameter("user", user);
             query.setMaxResults(1);

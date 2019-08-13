@@ -85,7 +85,13 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public void updateUser(User user) {
-
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction;
+            transaction = session.beginTransaction();
+            session.update(user);
+            transaction.commit();
+        } catch (HibernateException e) {
+            logger.error("Failed to update user, ", e);
+        }
     }
-
 }

@@ -34,16 +34,6 @@ public class InitController {
         return "index";
     }
 
-    @GetMapping(value = "/asd")
-    public String init11() {
-        productService.add(new Product("shtuka", "shtuka", 100.0));
-        productService.add(new Product("shtuka2", "shtuka1", 100.0));
-
-        userService.add(new User("test", "test@test", "test", "admin"));
-        userService.add(new User("asd", "asd@asd", "asd", "user"));
-        return "index";
-    }
-
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
         return "index";
