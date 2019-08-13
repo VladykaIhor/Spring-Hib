@@ -11,7 +11,12 @@ import com.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import java.util.Optional;
 
@@ -19,12 +24,12 @@ import java.util.Optional;
 @SessionAttributes("order")
 public class OrderController {
 
-    @Autowired
     private final OrderService orderService;
     private final MailService mailService;
     private final CodeService codeService;
     private final UserService userService;
 
+    @Autowired
     public OrderController(OrderService orderService, MailService mailService,
                            CodeService codeService, UserService userService) {
         this.orderService = orderService;
@@ -62,7 +67,6 @@ public class OrderController {
         order.setPhoneNumber(phoneNumber);
         order.setZip(zip);
         orderService.addOrder(order);
-//        Optional<User> user1 = userService.getUserByLogin(user.getLogin());
         Code code = new Code(order.getId());
         mailService.sendConfirmationCode(user.getEmail(), code.getCode());
         return "orderPayment";

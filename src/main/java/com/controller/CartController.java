@@ -19,11 +19,11 @@ import java.util.Optional;
 @SessionAttributes({"user"})
 public class CartController {
 
-    @Autowired
     private final CartService cartService;
     private final ProductService productService;
     private final UserService userService;
 
+    @Autowired
     public CartController(CartService cartService, ProductService productService, UserService userService) {
         this.cartService = cartService;
         this.productService = productService;
@@ -35,14 +35,13 @@ public class CartController {
                                   @RequestParam("id") Long id) {
         Optional<User> currentUser = userService.getUserByLogin(user.getLogin());
         Optional<Product> product = productService.getById(id);
-        if (cartService.getCartByUser(currentUser.get()).isPresent()) {
-            Optional<Cart> cartByUser = cartService.getCartByUser(currentUser.get());
+        Optional<Cart> cartByUser1 = cartService.getCartByUser(currentUser.get());
+        if (cartByUser1.isPresent()) {
+            Optional<Cart> cartByUser = cartByUser1;
         } else {
             cartService.createCart(currentUser.get());
         }
         cartService.addProductToCart(currentUser.get(), product.get());
-        Cart cart = cartService.getCartByUser(currentUser.get()).get();
-        int sizeOfACart = cartService.getSizeOfACart(cart);
         return "redirect:/user/products";
     }
 }

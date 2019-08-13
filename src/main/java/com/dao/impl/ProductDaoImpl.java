@@ -2,6 +2,7 @@ package com.dao.impl;
 
 import com.dao.ProductDao;
 import com.entity.Product;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -16,12 +17,13 @@ import java.util.Optional;
 @Repository
 public class ProductDaoImpl implements ProductDao {
 
+    private static final Logger logger = Logger.getLogger(OrderDaoImpl.class);
+
     private final SessionFactory getSessionFactory;
 
     public ProductDaoImpl(SessionFactory getSessionFactory) {
         this.getSessionFactory = getSessionFactory;
     }
-
 
     @Override
     public List<Product> getAll() {
@@ -45,7 +47,7 @@ public class ProductDaoImpl implements ProductDao {
                 return Optional.of(product);
             }
         } catch (Exception e) {
-
+            logger.error("Failed to get by product by id, ", e);
         }
         return Optional.empty();
     }
@@ -62,7 +64,7 @@ public class ProductDaoImpl implements ProductDao {
             session.update("product", product);
             transaction.commit();
         } catch (Exception e) {
-
+            logger.error("Failed to update product", e);
         }
     }
 }

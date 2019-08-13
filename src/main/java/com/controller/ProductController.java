@@ -17,11 +17,10 @@ import java.util.Optional;
 @Controller
 public class ProductController {
 
-    @Autowired
     private final ProductService productService;
-    @Autowired
     private final CartService cartService;
 
+    @Autowired
     public ProductController(ProductService productService, CartService cartService) {
         this.productService = productService;
         this.cartService = cartService;
