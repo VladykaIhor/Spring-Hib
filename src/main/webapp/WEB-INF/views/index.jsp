@@ -1,45 +1,17 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+         pageEncoding="ISO-8859-1"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<!DOCTYPE html >
 <html>
 <head>
-    <title>Start page</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>Authorization</title>
 </head>
-
-<style>
-    .container {
-        height: 100vh;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .container form {
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-    .container button {
-        margin-top: 10px;
-    }
-
-    .container label {
-        margin: 5px 0;
-    }
-</style>
 <body>
-
-<div class="container">
-    <form action="login" method="post">
-        <label for="login">Login </label>
-        <input class="form-control" type="text" name="login" id="login" placeholder="Enter login">
-        <label for="password">Password</label>
-        <input class="form-control" type="password" id="password" name="password" placeholder="Enter password">
-        <button type="submit" class="btn btn-success">Sign In</button>
-    </form>
-</div>
-
+<h2>Spring Security 4 - Custom login form example</h2>
+<hr />
+<a href="/login">Authorization</a>
+<br>
+<a href='<spring:url value="/signout"/>'>Logout</a>
 </body>
 </html>

@@ -41,7 +41,7 @@ public class ProductController {
             Product product = new Product(name, description, price);
             productService.add(product);
         } else {
-            model.addAttribute("error", "Please enter all field!");
+            model.addAttribute("error", "Please fill all the fields correctly!");
             return "register_product";
         }
         return "redirect:/admin/products";

@@ -9,7 +9,7 @@
     <h2> List of all users</h2>
     <a href="register"> Add new user</a> <br>
     <a href="products">List of all items</a> <br>
-    <form action="/logout" method="post">
+    <form action="/signout" method="post">
         <button type="submit">Logout</button>
     </form>
     <table border="1">

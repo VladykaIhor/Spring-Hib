@@ -7,6 +7,7 @@ import com.service.CartService;
 import com.service.ProductService;
 import com.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,17 +32,15 @@ public class CartController {
     }
 
     @PostMapping(value = {"/user/products/add_to_cart"})
-    public String addToCartButton(@SessionAttribute("user") User user,
+    public String addToCartButton(@AuthenticationPrincipal User user,
                                   @RequestParam("id") Long id) {
-        Optional<User> currentUser = userService.getUserByLogin(user.getLogin());
         Optional<Product> product = productService.getById(id);
-        Optional<Cart> cartByUser1 = cartService.getCartByUser(currentUser.get());
-        if (cartByUser1.isPresent()) {
-            Optional<Cart> cartByUser = cartByUser1;
+        if (cartService.getCartByUser(user).isPresent()) {
+            cartService.addProductToCart(user, product.get());
         } else {
-            cartService.createCart(currentUser.get());
+            cartService.createCart(user);
+            cartService.addProductToCart(user, product.get());
         }
-        cartService.addProductToCart(currentUser.get(), product.get());
         return "redirect:/user/products";
     }
 }

@@ -34,7 +34,7 @@
             </tr>
             </c:forEach>
             <br>
-            <form action="/users/orderConfirmation" method="post">
+            <form action="/user/orderConfirmation" method="post">
                 <button type="submit">Confirm Order</button>
             </form>
     </center>
