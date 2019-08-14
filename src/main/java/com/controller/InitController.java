@@ -5,6 +5,9 @@ import com.entity.User;
 import com.service.ProductService;
 import com.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,34 +27,29 @@ public class InitController {
         this.productService = productService;
     }
 
+    @GetMapping("/init")
+    public String init() {
+        User admin = new User("test", "test@test", "test", "admin");
+        User user = new User("user", "yngwar95@gmail.com", "user", "user");
+        userService.add(admin);
+        userService.add(user);
+        return "index";
+    }
+
     @ModelAttribute("user")
     public User setUpUserForm() {
         return new User();
     }
 
-    @GetMapping(value = "/")
-    public String init() {
-        return "index";
-    }
-
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login() {
-        return "index";
-    }
-
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(@ModelAttribute("user") User user, Model model) {
-        Optional<User> userFromBase = userService.authentication(user);
-        model.addAttribute(userFromBase);
-        if (userFromBase.isPresent()) {
-            if (userFromBase.get().getRole().equals("admin")) {
-                return "redirect:/admin/users";
-            } else if (userFromBase.get().getRole().equals("user")) {
-                model.addAttribute("products", productService.getAll());
-                return "productsUser";
-            }
+    @GetMapping("/")
+    public String login(@AuthenticationPrincipal User user) {
+        if (user == null) {
+            return "redirect:/login";
+        } else if ("ROLE_ADMIN".equals(user.getRole())) {
+            return "redirect:/admin/user";
+        } else {
+            return "redirect:/user/products";
         }
-        return "index";
     }
 
     @GetMapping(path = {"/logout"})

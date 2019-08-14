@@ -9,7 +9,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -22,17 +24,17 @@ public class UserDaoImp implements UserDao {
     private static final Logger logger = Logger.getLogger(UserDaoImp.class);
 
     private final SessionFactory sessionFactory;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserDaoImp(SessionFactory sessionFactory) {
+    public UserDaoImp(SessionFactory sessionFactory, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.sessionFactory = sessionFactory;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
     public void add(User user) {
-        byte[] salt = SaltHashingUtil.getSalt();
-        user.setSalt(salt);
-        user.setPassword(SaltHashingUtil.saltAndHashPassword(user.getPassword(), user.getSalt()));
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         sessionFactory.getCurrentSession().save(user);
     }
 
@@ -54,7 +56,7 @@ public class UserDaoImp implements UserDao {
         }
     }
 
-
+    @Transactional
     @Override
     public Optional<User> getUserByLogin(String login) {
         try {

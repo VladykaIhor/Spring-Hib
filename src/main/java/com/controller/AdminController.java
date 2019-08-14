@@ -14,13 +14,13 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
     public String allUsers(Model model) {
         model.addAttribute("allUsers", userService.listUsers());
         return "users";
     }
 
-    @PostMapping(path = {"/remove/users"})
+    @PostMapping(path = {"/remove/user"})
     public String deleteUser(@RequestParam("id") Long id) {
         userService.remove(id);
         return "redirect:/admin/users";
@@ -47,7 +47,7 @@ public class AdminController {
         return "redirect:/users";
     }
 
-    @GetMapping(value = "/edit/users")
+    @GetMapping(value = "/edit/user")
     public String getUserEditPage(@RequestParam("id") Long id, Model model) {
         model.addAttribute("id", id);
         model.addAttribute("login", userService.getUserById(id).get().getLogin());

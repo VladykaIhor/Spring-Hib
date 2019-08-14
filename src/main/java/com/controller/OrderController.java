@@ -9,6 +9,7 @@ import com.service.MailService;
 import com.service.OrderService;
 import com.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +45,7 @@ public class OrderController {
 
     }
 
-    @PostMapping(value = "/users/orderConfirmation")
+    @PostMapping(value = "/user/orderConfirmation")
     public String getOrderPage(Model model) {
         return "orderConfirmation";
     }
@@ -78,10 +79,9 @@ public class OrderController {
     }
 
     @PostMapping("/confirm_order")
-    public String confirmOrder(@SessionAttribute("user") User user,
+    public String confirmOrder(@AuthenticationPrincipal User user,
                                @RequestParam("code") String codeFromPage,
                                Model model) {
-
         Long orderIdByUser = orderService.getOrderIdByUser(user);
         Optional<Code> code = codeService.getCode(orderIdByUser);
         if (code.equals(codeFromPage)) {
